@@ -1,4 +1,5 @@
 import { AsyncStorage } from 'react-native';
+
 import Data from '../Data';
 import { hashPassword } from '../../lib/utils';
 import call from '../Call';
@@ -26,7 +27,7 @@ module.exports = {
       this.handleLogout();
       this.connect();
 
-      typeof callback == 'function' && callback(err);
+      typeof callback == 'function' && callback(err, result);
     });
   },
   handleLogout() {
@@ -74,7 +75,7 @@ module.exports = {
 
       this._handleLoginCallback(err, result);
 
-      typeof callback == 'function' && callback(err);
+      typeof callback == 'function' && callback(err, result);
     });
   },
   _startLoggingIn() {
@@ -94,7 +95,8 @@ module.exports = {
       Data.notify('onLogin');
     } else {
       Data.notify('onLoginFailure');
-      this.handleLogout();
+      console.warn('login failed, make sure the server you are accessing is correct');
+      //this.handleLogout();
     }
     Data.notify('change');
   },
@@ -105,7 +107,7 @@ module.exports = {
       call('login', { resume: value }, (err, result) => {
         this._endLoggingIn();
         this._handleLoginCallback(err, result);
-        typeof callback == 'function' && callback(err);
+        typeof callback == 'function' && callback(err, result);
       });
     } else {
       this._endLoggingIn();
