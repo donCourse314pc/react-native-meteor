@@ -96,7 +96,6 @@ module.exports = {
     });
 
     Data.ddp.on('connected', () => {
-
       Data.notify('change');
 
       console.info('Connected to DDP server.');
